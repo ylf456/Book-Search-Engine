@@ -51,6 +51,7 @@ const SavedBooks = () => {
     }
 
     try {
+      // refactor this to useMutation
       const response = await deleteBook(bookId, token);
 
       if (!response.ok) {
