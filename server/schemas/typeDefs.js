@@ -15,25 +15,22 @@ type bookSchema {
     link: String
     title: String!
 }
+
 type Auth {
     token: ID!
     user: User
-  }
+}
 
 type Query {
-    getSingleUser(userID:ID!)
+    getSingleUser(userID:ID!): User
 }
 
 type Mutation {
-   createUser(name: String!, email: String!, password: String!): Auth
+   createUser(username: String!, email: String!, password: String!): Auth
    login(email: String!, password: String!): Auth
-   saveBook(authors: String
-    description: String!,
-    bookId: String!,
-    image: String,
-    title: String!): User
+   saveBook(authors: String, description: String!, bookId: String!, image: String, title: String!): User
    deleteBook(bookId:String!): User
 }
-`
+`;
 
 module.exports = typeDefs;
