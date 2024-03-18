@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const Query_SINGLEUSER = gql`
+export const QUERY_ME = gql`
 query getSingleUser {
     getSingleUser {
         _id
