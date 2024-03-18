@@ -6,17 +6,26 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
-
-import { getMe, deleteBook } from '../utils/API';
+import {QUERY_ME} from '../utils/queries'
+import{deleteBook} from '../utils/mutations'
+//import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
+  // Apollo queries and mutations
+  const [removeSkill, { error }] = useMutation
+  (REMOVE_SKILL, {
+    refetchQueries: [
+      QUERY_ME,
+      'me'
+    ]
+  });
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
-
+  
   useEffect(() => {
     const getUserData = async () => {
       try {
