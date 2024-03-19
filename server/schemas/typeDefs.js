@@ -9,7 +9,7 @@ type User {
 
 type bookSchema {
     _id:ID!
-    authors: String
+    authors: [String]
     description: String
     bookId: String
     image: String
