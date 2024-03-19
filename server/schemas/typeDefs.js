@@ -4,17 +4,17 @@ type User {
     username: String
     email: String
     password: String
-    savedBooks: [bookSchema]!
+    savedBooks: [Book]
 }
 
-type bookSchema {
+type Book {
     _id:ID!
     authors: [String]
-    description: String
-    bookId: String
+    description: String!
+    bookId: String!
     image: String
     link: String
-    title: String
+    title: String!
 }
 
 type Auth {
@@ -23,15 +23,16 @@ type Auth {
 }
 
 type Query {
-    getSingleUser(_id:ID!): User
+    getSingleUser: User
 }
 
 type Mutation {
    createUser(username: String!, email: String!, password: String!): Auth
    login(email: String!, password: String!): Auth
-   saveBook(authors: String, description: String!, bookId: String!, image: String, title: String!): User
-   deleteBook(bookId:String!): User
+   saveBook(bookId: String!, authors: [String], title: String!, description: String!, image: String): User
+   deleteBook(bookId: String!): User
 }
 `;
 
 module.exports = typeDefs;
+//bookId, authors, title, description, image
