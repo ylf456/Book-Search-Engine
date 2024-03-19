@@ -5,6 +5,7 @@ mutation createUser($username: String!, $email: String!, $password: String!) {
     createUser(username:$usermane, email: $email, password: $password) {
         _id
         username
+        password
     }
 }`
 
@@ -15,6 +16,7 @@ export const LOGIN_USER = gql`
       user {
         _id
         username
+        password
       }
     }
   }

@@ -1,19 +1,20 @@
 const typeDefs = `
 type User {
-    _id: ID
-    username: String!
-    email: String!
-    password: String!
-    savedBooks: [bookSchema]
+    _id: ID!
+    username: String
+    email: String
+    password: String
+    savedBooks: [bookSchema]!
 }
 
 type bookSchema {
+    _id:ID!
     authors: String
-    description: String!
-    bookId: String!
+    description: String
+    bookId: String
     image: String
     link: String
-    title: String!
+    title: String
 }
 
 type Auth {
@@ -22,7 +23,7 @@ type Auth {
 }
 
 type Query {
-    getSingleUser(userID:ID!): User
+    getSingleUser(_id:ID!): User
 }
 
 type Mutation {

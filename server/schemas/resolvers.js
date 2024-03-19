@@ -1,11 +1,12 @@
-const { User } = require("../models");
+const { User } = require("../models/index.js");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
   Query: {
     //   $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-    getSingleUser: async (parent, { userId }) => {
-      return await User.findOne({ _id: userId });
+    getSingleUser: async (parent, args,context) => {
+      console.log(context.user._id);
+      return await User.findOne({ _id: context.user._id }).populate('savedBooks');
     },
   },
   Mutation: {
@@ -20,7 +21,7 @@ const resolvers = {
         throw AuthenticationError;
       }
 
-      const correctPw = await User.isCorrectPassword(password);
+      const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
         throw AuthenticationError;
