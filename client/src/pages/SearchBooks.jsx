@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 import { useMutation } from '@apollo/client';
@@ -57,7 +57,7 @@ const SearchBooks = () => {
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
-      setSearchedBooks(bookData);
+      setSearchedBooks(bookData);  // an array of objects contains books
       setSearchInput('');
     } catch (err) {
       console.error(err);
@@ -82,9 +82,10 @@ const SearchBooks = () => {
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-*/
+*/     
+      console.log(bookToSave)
       const data = await saveBook({
-        variables: { bookId },
+        variables: { ...bookToSave },
       })
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);

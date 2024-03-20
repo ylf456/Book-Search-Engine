@@ -6,6 +6,7 @@ import {
   ApolloProvider,
   createHttpLink,
 } from "@apollo/client";
+
 import Navbar from "./components/Navbar";
 import { setContext } from "@apollo/client/link/context";
 

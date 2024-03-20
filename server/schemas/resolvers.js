@@ -4,28 +4,35 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     //   $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-    getSingleUser: async (parent, args ,context) => {
-      console.log(context.user._id);
-      return await User.findOne({ _id: context.user._id }).populate('savedBooks');
+    getSingleUser: async (parent, args, context) => {
+      console.log("resolver: getsingleUser (context.user)", context.user);
+      if (context.user) {
+        const userData = await User.findOne({ _id: context.user._id });
+        console.log(userData);
+        return userData;
+      } else {
+        throw AuthenticationError;
+      }
     },
   },
   Mutation: {
-    createUser: async (parent, { name, email, password }) => {
-      const newUser = await User.create({ name, email, password });
+    createUser: async (parent, { username, email, password }) => {
+      console.log("resolver:createUser", { username, email, password });
+      const newUser = await User.create({ username, email, password });
       const token = signToken(newUser);
-      return { token, profile };
+      return { token, user: newUser };
     },
     login: async (parent, { email, password }) => {
-      console.log("login :resolver");
-      console.log({email,password});
+      console.log("resolver login");
+      console.log({ email, password });
 
       const user = await User.findOne({ email });
       if (!user) {
         throw AuthenticationError;
       }
 
-      console.log("user(data)",user)
-      
+    //  console.log("user(data)", user);
+
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
@@ -35,10 +42,21 @@ const resolvers = {
       return { token, user };
     },
 
-    saveBook: async (parent,{ bookId, authors, title, description, image },context) => {
+    saveBook: async (
+      parent,
+      { bookId, authors, title, description, image },
+      context
+    ) => {
+      console.log("resolver:saveBook", {
+        bookId,
+        authors,
+        title,
+        description,
+        image,
+      });
       if (context.user) {
         return User.findOneAndUpdate(
-          { _id: context.user._id,},
+          { _id: context.user._id },
           {
             $addToSet: {
               savedBooks: {
@@ -50,16 +68,18 @@ const resolvers = {
               },
             },
           },
-          { new: true,}
+          { new: true }
         );
       }
     },
     deleteBook: async (parent, { bookId }, context) => {
+      console.log("resolver deteBook: (context.user)", context.user)
+      console.log("resolver:deleteBook", { bookId });
       if (context.user) {
         return User.findOneAndUpdate(
-          { _id: context.user._id, },
+          { _id: context.user._id },
           { $pull: { savedBooks: { bookId: bookId } } },
-          { new: true, }
+          { new: true }
         );
       }
     },
