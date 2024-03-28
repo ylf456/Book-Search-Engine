@@ -1,7 +1,7 @@
 //import { useState, useEffect } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_ME } from '../utils/queries';
+import { QUERY_ME } from "../utils/queries";
 
 import { DELETE_BOOK } from "../utils/mutations";
 
@@ -13,15 +13,14 @@ const SavedBooks = () => {
   // const [userData, setUserData] = useState({});
   // Apollo queries and mutations
   const { loading, data } = useQuery(QUERY_ME);
-  console.log('React (data)', data)
-  const [removeBook, { error }] = useMutation( DELETE_BOOK, {
-    refetchQueries: 
-    [QUERY_ME, "getSingleUser"],
+  console.log("React (data)", data);
+  const [removeBook, { error }] = useMutation(DELETE_BOOK, {
+    refetchQueries: [QUERY_ME, "getSingleUser"],
   });
-  
-  const userData = data?.getSingleUser || {}
-  console.log("userData", userData)
-  
+
+  const userData = data?.getSingleUser || {};
+  console.log("userData", userData);
+
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -31,7 +30,7 @@ const SavedBooks = () => {
     }
 
     try {
-      console.log("handle DeleteBook: (bookId)",bookId)
+      console.log("handle DeleteBook: (bookId)", bookId);
       const { data } = await removeBook({
         variables: { bookId },
       });
@@ -56,7 +55,7 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className="pt-5">
-          {userData.savedBooks.length 
+          {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
               }:`
